@@ -1,4 +1,4 @@
-import ChatInterface from "./pages/chatInterface"
+import ChatInterface from "./pages/ChatInterface"
 
 export default function App() {
   return (
