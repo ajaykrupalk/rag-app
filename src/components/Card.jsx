@@ -1,28 +1,44 @@
 import { useState } from "react";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 export default function Card() {
     const [token, setToken] = useState("");
+    const [error, setError] = useState(false);
+    const [success, setSuccess] = useState(false);
     const [cookie, setCookie] = useCookies(['token']);
     const [load, setLoad] = useState(false);
+    const navigate = useNavigate();
 
     const saveToken = async () => {
+        if(!token){
+            setError(true);
+            setSuccess(false);
+            setLoad(false);
+            return;
+        }
         setLoad(true);
+        setError(false)
+        setSuccess(true);
         setCookie('token', token, { path: '/', secure: true, sameSite: 'lax' });
+        setTimeout(()=>{
+            navigate("/upload")
+        }, 3000)
     }
 
     return (
         <div className="w-[22em]">
-            <div className="h-max bg-red-100 text-red-500 font-medium p-2.5 text-xs rounded">
-                <div className="flex gap-1 items-center">
+            <div className={`h-max ${error ? 'bg-red-100 text-red-500' : ''} ${success ? 'bg-green-100 text-green-500' : ''} font-medium p-2.5 text-xs rounded`}>
+                {error && <div className="flex gap-1 items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                         <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
                         <path d="M12 9v4" /><path d="M12 16v.01" />
                     </svg>
-                    <p>You are Unauthorized</p>
+                    <p>Invalid Token</p>
                 </div>
-                {/* <div className="flex gap-1 items-center">
+                }
+                {success && <div className="flex gap-1 items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                         <path d="M18.9 7a8 8 0 0 1 1.1 5v1a6 6 0 0 0 .8 3" />
@@ -32,7 +48,7 @@ export default function Card() {
                         <path d="M4.9 19a22 22 0 0 1 -.9 -7v-1a8 8 0 0 1 12 -6.95" />
                     </svg>
                     <p>Successfully Authorized</p>
-                </div> */}
+                </div>}
             </div>
             <div className="border-2 border-gray-200 rounded-md">
                 <div className="bg-white px-4 py-2 rounded-tl-md rounded-tr-md">

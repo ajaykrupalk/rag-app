@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import PdfIcon from '../assets/pdf-svgrepo-com.svg'
 import FileDisplay from './FileDisplay';
+import { useNavigate } from 'react-router-dom';
 
 export default function Upload() {
     const [dragging, setDragging] = useState(false);
     const [fileName, setFileName] = useState("");
+    const [fileUrl, setFileUrl] = useState("");
     const [uploadStatus, setUploadStatus] = useState(false);
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     const handleDragEnter = (e) => {
         e.preventDefault();
@@ -38,19 +41,21 @@ export default function Upload() {
 
     const handleFile = (file) => {
         if(file.type.startsWith('application/pdf')){
+            setFileUrl(URL.createObjectURL(file))
             setTimeout(()=>{
                 setUploadStatus(true);
             }, 5000)
-            const fileUrl = URL.createObjectURL(file)
             setError('')
         } else {
             setFileName('')
+            setFileUrl('')
             setError('Select a valid PDF file')
         }
     }
 
     const handleUpload = () => {
-        document.getElementById('fileInput').disabled = true
+        document.getElementById('fileInput').disabled = true;
+        navigate("/chat", {state: {fileName: fileName, fileUrl: fileUrl }})
     }
 
     return (

@@ -1,7 +1,7 @@
-import ChatInterface from "./pages/ChatInterface"
+import PageUploadFile from "./components/PageUploadFile"
 
 export default function App() {
   return (
-    <ChatInterface />
+    <PageUploadFile />
   )
 }
