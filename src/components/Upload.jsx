@@ -66,7 +66,7 @@ export default function Upload() {
                 onDragOver={handleDragEnter}
                 onDrop={handleDrop}
                 className={`bg-slate-50 flex flex-col items-center justify-center h-40 w-96 border-2 border-gray-400 border-dashed rounded-sm
-                        ${dragging ? 'bg-indigo-100 border-indigo-400' : ''}`}>
+                        ${dragging ? 'bg-indigo-200/75 border-indigo-400' : ''}`}>
                 <img src={PdfIcon} alt="pdf-icon" className='h-8 w-8' />
                 <input type="file" accept=".pdf" className="hidden pointer-events-none" id='fileInput' onChange={handleFileChange} />
                 <p className="mt-2 text-xs font-medium text-gray-400">Drag and Drop or
