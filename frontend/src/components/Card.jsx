@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
+import axios from "axios";
+
 export default function Card() {
     const [token, setToken] = useState("");
     const [error, setError] = useState(false);
@@ -10,25 +12,43 @@ export default function Card() {
     const [load, setLoad] = useState(false);
     const navigate = useNavigate();
 
+    const handleInputChange = (e) => {
+        setError(false);
+        setSuccess(false);
+        setToken(e.target.value)
+    }
+
     const saveToken = async () => {
-        if(!token){
+        setLoad(true);
+
+        if (!token) {
             setError(true);
             setSuccess(false);
             setLoad(false);
             return;
         }
-        setLoad(true);
-        setError(false)
-        setSuccess(true);
-        setCookie('token', token, { path: '/', secure: true, sameSite: 'lax' });
-        setTimeout(()=>{
-            navigate("/upload")
-        }, 3000)
+
+        await axios.post(`${import.meta.env.VITE_BACKEND_URI}/auth`, {
+            token: token
+        })
+            .then(() => {
+                setError(false);
+                setSuccess(true);
+                setCookie('token', token, { path: '/', secure: true, sameSite: 'lax' });
+                setTimeout(() => {
+                    navigate("/upload")
+                }, 1500)
+            })
+            .catch(() => {
+                setError(true);
+                setSuccess(false);
+                setLoad(false);
+            })
     }
 
     return (
         <div className="w-[22em]">
-            <div className={`h-max ${error ? 'bg-red-100 text-red-500' : ''} ${success ? 'bg-green-100 text-green-500' : ''} font-medium p-2.5 text-xs rounded`}>
+            <div className={`h-max ${error ? 'bg-red-100 text-red-600' : ''} ${success ? 'bg-green-100 text-green-600' : ''} font-medium p-2.5 text-xs rounded`}>
                 {error && <div className="flex gap-1 items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -64,7 +84,7 @@ export default function Card() {
                                     <path className="stroke-0" d="M12 2a9.96 9.96 0 0 1 6.29 2.226a1 1 0 0 1 .04 1.52l-1.51 1.362a1 1 0 0 1 -1.265 .06a6 6 0 1 0 2.103 6.836l.001 -.004h-3.66a1 1 0 0 1 -.992 -.883l-.007 -.117v-2a1 1 0 0 1 1 -1h6.945a1 1 0 0 1 .994 .89c.04 .367 .061 .737 .061 1.11c0 5.523 -4.477 10 -10 10s-10 -4.477 -10 -10s4.477 -10 10 -10z" fill="currentColor" />
                                 </svg>
                             </div>
-                            <input type="text" value={token} onChange={(e) => setToken(e.target.value)} className={`w-full rounded-md h-8 ps-7 p-2.5 pe-7 text-sm font-basic border border-gray-300 focus:outline-none focus:border-gray-400 ${load ? 'border-green-500' : ''}`} placeholder="Enter Google API Key"></input>
+                            <input type="text" value={token} onChange={handleInputChange} className={`w-full rounded-md h-8 ps-7 p-2.5 pe-7 text-sm font-basic border border-gray-300 focus:outline-none focus:border-gray-400 ${success ? 'border-2 border-green-500' : ''} ${error ? 'border-2 border-red-500' : ''}`} placeholder="Enter Google API Key"></input>
                             <div>
                                 <button className="absolute inset-y-0 end-0 flex items-center p-1 bg-black rounded-tr-md rounded-br-md" onClick={saveToken}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className={`w-4 h-4 stroke-white ${load ? 'hidden' : ''}`} viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">

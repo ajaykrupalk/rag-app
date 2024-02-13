@@ -1,19 +1,21 @@
 const { ChatGoogleGenerativeAI } = require('@langchain/google-genai')
+const { helper } = require('../helpers/helper')
 
 const welcome = (req, res) => {
     res.status(200).send('Hello World!')
 }
 
 const auth = async (req, res) => {
+    console.log("Checking Authentication...")
     try {
+        const { token } = req.body
         const model = new ChatGoogleGenerativeAI({
             modelName: "gemini-pro",
             maxOutputTokens: 1,
-            apiKey: req.body.token
+            apiKey: token
         });
 
-        // Batch and stream are also supported
-        const response = await model.invoke([
+        await model.invoke([
             [
                 "human",
                 "Hello World!",
@@ -27,4 +29,21 @@ const auth = async (req, res) => {
     }
 }
 
-module.exports = { welcome, auth }
+const pdfchat = async (req, res) => {
+    try {
+        const stream = await helper(req.body.token)
+
+        for await (const chunk of stream) {
+            const decoder = new TextDecoder();
+            const text = decoder.decode(chunk);
+            console.log("Chunk:",text);
+            res.write(text)
+        }
+        res.end();
+    } catch(e){
+        console.error(e);
+        res.status(400).json({message: e.message})
+    }
+}
+
+module.exports = { welcome, auth, pdfchat }
