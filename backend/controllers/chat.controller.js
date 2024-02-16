@@ -31,7 +31,8 @@ const auth = async (req, res) => {
 
 const pdfchat = async (req, res) => {
     try {
-        const stream = await helper(req.body.token)
+        const { token } = req.body
+        const stream = await helper(token)
 
         for await (const chunk of stream) {
             const decoder = new TextDecoder();

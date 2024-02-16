@@ -1,4 +1,4 @@
-export default function UserResponse() {
+export default function UserResponse({ text }) {
     return (
         <div className="mb-3 flex justify-center flex-nowrap">
             <div className="bg-black h-8 w-8 rounded-full flex justify-center items-center">
@@ -8,7 +8,9 @@ export default function UserResponse() {
                     <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
                 </svg>
             </div>
-            <div className="ml-2 p-2 w-[35rem] h-auto bg-white rounded-md rounded-tl-none border-2 border-gray-200">Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni beatae quam possimus corporis similique necessitatibus eum cupiditate deleniti, illo blanditiis nisi et aspernatur quo nihil eius. Ab animi corporis hic odio necessitatibus consequuntur reiciendis facilis consectetur laborum. Reiciendis id, qui, earum modi maiores adipisci culpa a possimus voluptates reprehenderit temporibus.</div>
+            <div className="ml-2 p-2 w-[35rem] h-auto bg-white rounded-md rounded-tl-none border-2 border-gray-200">
+                <p>{ text }</p>
+            </div>
         </div>
     );
 }
