@@ -13,6 +13,7 @@ export default function Responses({ fileName, fileUrl, userInput }) {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+
         const handleMessage = async (message) => {
             if (message && !loading && !textStream) {
                 setLoading(true)
@@ -42,19 +43,22 @@ export default function Responses({ fileName, fileUrl, userInput }) {
                     result += text;
                     setLoading(false)
                     setTextStream(true);
+                    scrollToBottom();
                     setStreamingText(prevText => prevText + text)
                 }
-                setTimeout(() => {
-                    setStreamingText('')
-                    setTextStream(false);
-                    setMessages(prevMessages => [...prevMessages, { type: 'ai', text: result }]);
-                }, 5000)
+                scrollToBottom();
+                setStreamingText('')
+                setTextStream(false);
+                setMessages(prevMessages => [...prevMessages, { type: 'ai', text: result }]);
             }
         }
 
         handleMessage(userInput);
-        scrollToBottom()
-    }, [userInput])
+    }, [userInput, chatContainerRef]);
+
+    useEffect(()=>{
+        scrollToBottom();
+    },[messages])
 
     const scrollToBottom = () => {
         if (chatContainerRef.current) {
@@ -69,8 +73,8 @@ export default function Responses({ fileName, fileUrl, userInput }) {
             {messages.map((message, index) => (
                 <div key={index}>
                     {message.type === 'user' ?
-                        <UserResponse text={message.text} /> :
-                        <ChatResponse text={message.text} />
+                        <UserResponse text={message.text}/> :
+                        <ChatResponse text={message.text}/>
                     }
                 </div>
             ))}

@@ -11,6 +11,7 @@ export default function PageChatInterface() {
   const navigate = useNavigate();
   const location = useLocation();
   const [data, setData] = useState("")
+  const [inputValue, setInputValue] = useState("")
   const [cookies, setCookies] = useCookies(['token']);
 
   useEffect(()=> {
@@ -31,10 +32,14 @@ export default function PageChatInterface() {
     checkAuth();
   },[navigate, location, cookies.token]);
 
+  const handleInputChange = (value) => {
+    setInputValue(value)
+  }
+
   return (
     <Layout>
-      <Responses fileName={data.fileName} fileUrl={data.fileUrl}/>
-      <InputBox />
+      <Responses fileName={data.fileName} fileUrl={data.fileUrl} userInput={inputValue}/>
+      <InputBox handleInput={handleInputChange}/>
     </Layout>
   )
 }

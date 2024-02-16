@@ -40,9 +40,9 @@ export default function Upload() {
     }
 
     const handleFile = (file) => {
-        if(file.type.startsWith('application/pdf')){
+        if (file.type.startsWith('application/pdf')) {
             setFileUrl(URL.createObjectURL(file))
-            setTimeout(()=>{
+            setTimeout(() => {
                 setUploadStatus(true);
             }, 5000)
             setError('')
@@ -55,7 +55,7 @@ export default function Upload() {
 
     const handleUpload = () => {
         document.getElementById('fileInput').disabled = true;
-        navigate("/chat", {state: {fileName: fileName, fileUrl: fileUrl }})
+        navigate("/chat", { state: { fileName: fileName, fileUrl: fileUrl } })
     }
 
     return (
@@ -79,7 +79,7 @@ export default function Upload() {
                 </p>
             </div>
             <div className={`${fileName === '' ? 'hidden' : ''}`}>
-                <FileDisplay fileName={fileName} uploadStatus={uploadStatus} handleUpload={handleUpload}/>
+                <FileDisplay fileName={fileName} uploadStatus={uploadStatus} handleUpload={handleUpload} />
             </div>
         </>
     );
