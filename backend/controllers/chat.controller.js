@@ -33,7 +33,6 @@ const pdfchat = async (req, res) => {
     try {
         const filePath = req.file.path;
         const { token, question, sessionId } = req.body
-        console.log("Request Body", sessionId)
         const stream = await helper(token, question, sessionId, filePath)
 
         for await (const chunk of stream) {
