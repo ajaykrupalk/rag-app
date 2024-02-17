@@ -11,6 +11,7 @@ const { HttpResponseOutputParser } = require("langchain/output_parsers");
 const { RunnableWithMessageHistory } = require("@langchain/core/runnables");
 const { ChatMessageHistory } = require("langchain/stores/message/in_memory");
 const parse = require("pdf-parse");
+const fs = require("fs")
 
 
 async function loadAndSplitChunks({
@@ -97,6 +98,15 @@ async function helper(token, question, sessionId, fileUrl) {
 
     // retrieve the document the vectorstore
     const retriever = vectorstore.asRetriever();
+
+    fs.unlink(fileUrl, (err) => {
+        if (err) {
+            console.error('Error deleting file:', err);
+            return;
+        }
+        console.log('File deleted successfully');
+    });
+
 
     const documentRetrievalChain = createDocumentRetrievalChain(retriever);
     const rephraseQuestionChain = createRephraseQuestionChain(token);
