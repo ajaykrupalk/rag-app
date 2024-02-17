@@ -38,7 +38,7 @@ export default function PageChatInterface() {
 
   return (
     <Layout>
-      <Responses fileName={data.fileName} userInput={inputValue}/>
+      <Responses fileName={data.fileName} userInput={inputValue} fileObj={data.fileObj}/>
       <InputBox handleInput={handleInputChange}/>
     </Layout>
   )

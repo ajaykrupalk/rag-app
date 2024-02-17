@@ -14,10 +14,12 @@ const parse = require("pdf-parse");
 
 
 async function loadAndSplitChunks({
+    fileUrl,
     chunkSize,
     chunkOverlap
 }) {
-    const loader = new PDFLoader("D:/Learning/files/drylab.pdf");
+
+    const loader = new PDFLoader(fileUrl);
 
     const rawCS229Docs = await loader.load();
 
@@ -28,6 +30,7 @@ async function loadAndSplitChunks({
 
     const splitDocs = await splitter.splitDocuments(rawCS229Docs);
     return splitDocs;
+
 }
 
 async function initializeVectorstoreWithDocuments({
@@ -79,24 +82,25 @@ function createRephraseQuestionChain(token) {
 }
 
 
-async function helper(token, question, sessionId){
+async function helper(token, question, sessionId, fileUrl) {
     // load the pdf file and split the document
     const splitDocs = await loadAndSplitChunks({
+        fileUrl: fileUrl,
         chunkSize: 1536,
         chunkOverlap: 128,
     });
-    
+
     const vectorstore = await initializeVectorstoreWithDocuments({
         documents: splitDocs,
         token
     });
-    
-    // // retrieve the document =the vectorstore
+
+    // retrieve the document the vectorstore
     const retriever = vectorstore.asRetriever();
-    
+
     const documentRetrievalChain = createDocumentRetrievalChain(retriever);
     const rephraseQuestionChain = createRephraseQuestionChain(token);
-    
+
     // make a prompt template
     const ANSWER_CHAIN_SYSTEM_TEMPLATE = `You are an experienced researcher,
     expert at interpreting and answering questions based on provided sources.
@@ -107,7 +111,7 @@ async function helper(token, question, sessionId){
     <context>
     {context}
     </context>`;
-    
+
     const answerGenerationChainPrompt = ChatPromptTemplate.fromMessages([
         ["system", ANSWER_CHAIN_SYSTEM_TEMPLATE],
         new MessagesPlaceholder("history"),
@@ -118,7 +122,7 @@ async function helper(token, question, sessionId){
         {standalone_question}`
         ]
     ]);
-    
+
     const conversationalRetrievalChain = RunnableSequence.from([
         RunnablePassthrough.assign({
             standalone_question: rephraseQuestionChain,
@@ -133,12 +137,12 @@ async function helper(token, question, sessionId){
             apiKey: token
         }),
     ]);
-    
+
     // "text/event-stream" is also supported
     const httpResponseOutputParser = new HttpResponseOutputParser({
         contentType: "text/plain"
     });
-    
+
     const messageHistories = {};
     const getMessageHistoryForSession = (sessionId) => {
         if (messageHistories[sessionId] !== undefined) {
@@ -148,7 +152,7 @@ async function helper(token, question, sessionId){
         messageHistories[sessionId] = newChatSessionHistory;
         return newChatSessionHistory;
     };
-    
+
     const finalRetrievalChain = new RunnableWithMessageHistory({
         runnable: conversationalRetrievalChain,
         getMessageHistory: getMessageHistoryForSession,
@@ -157,8 +161,9 @@ async function helper(token, question, sessionId){
     }).pipe(httpResponseOutputParser);
 
     const stream = await finalRetrievalChain.stream({
-        question: "What are the pre-requisites for this course?"
-    }, { configurable: { sessionId: "123" } 
+        question: question
+    }, {
+        configurable: { sessionId: sessionId }
     });
 
     return stream;

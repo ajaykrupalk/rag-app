@@ -9,6 +9,7 @@ export default function Upload() {
     const [fileName, setFileName] = useState("");
     const [fileUrl, setFileUrl] = useState(null);
     const [uploadStatus, setUploadStatus] = useState(false);
+    const [fileObj, setFileObj] = useState(null);
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const [cookies, setCookies] = useCookies(['token', 'fileUrl']);
@@ -44,6 +45,7 @@ export default function Upload() {
 
     const handleFile = async (file) => {
         if (file.type.startsWith('application/pdf')) {
+            setFileObj(file)
             setFileUrl(URL.createObjectURL(file))
             setCookies("fileUrl", URL.createObjectURL(file))
             setTimeout(() => {
@@ -59,7 +61,7 @@ export default function Upload() {
 
     const handleUpload = () => {
         document.getElementById('fileInput').disabled = true;
-        navigate("/chat", { state: { fileName: fileName, fileUrl: fileUrl } })
+        navigate("/chat", { state: { fileName: fileName, fileUrl: fileUrl, fileObj: fileObj } })
     }
 
     return (

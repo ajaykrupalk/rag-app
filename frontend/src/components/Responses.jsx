@@ -4,7 +4,7 @@ import ChatResponse from "./ChatResponse";
 import { useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 
-export default function Responses({ fileName, userInput }) {
+export default function Responses({ fileName, userInput, fileObj }) {
     const chatContainerRef = useRef(null);
     const [messages, setMessages] = useState([])
     const [cookies, setCookies] = useCookies(['token', 'fileUrl']);
@@ -12,9 +12,10 @@ export default function Responses({ fileName, userInput }) {
     const [textStream, setTextStream] = useState(false);
     const [loading, setLoading] = useState(false);
     const [sessionId, setSessionId] = useState("");
- 
+    const formData = new FormData();
+
     useEffect(() => {
-        if(cookies.fileUrl){
+        if (cookies.fileUrl) {
             setSessionId(`${Date.now()}-${Math.floor(Math.random() * 10000)}`)
         }
     },[cookies.fileUrl])
@@ -25,12 +26,14 @@ export default function Responses({ fileName, userInput }) {
                 setLoading(true)
                 setMessages([...messages, { type: 'user', text: message }])
                 const token = cookies.token
-                                const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/pdfchat`, {
+                formData.append('token', token)
+                formData.append('question', message)
+                formData.append('sessionId', sessionId)
+                formData.append('file', fileObj)
+                console.log('responses', fileObj)
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/pdfchat`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json' // Specify content type as JSON
-                    },
-                    body: JSON.stringify({ token: token, question: message, sessionId: sessionId, fileUrl: cookies.fileUrl })
+                    body: formData
                 })
 
                 if (!response.ok) {

@@ -31,20 +31,23 @@ const auth = async (req, res) => {
 
 const pdfchat = async (req, res) => {
     try {
-        const { token } = req.body
-        const stream = await helper(token)
+        const filePath = req.file.path;
+        const { token, question, sessionId } = req.body
+        console.log("Request Body", sessionId)
+        const stream = await helper(token, question, sessionId, filePath)
 
         for await (const chunk of stream) {
             const decoder = new TextDecoder();
             const text = decoder.decode(chunk);
-            console.log("Chunk:",text);
+            console.log("Chunk:", text);
             res.write(text)
         }
         res.end();
-    } catch(e){
+    } catch (e) {
         console.error(e);
-        res.status(400).json({message: e.message})
+        res.status(400).json({ message: e.message })
     }
 }
 
-module.exports = { welcome, auth, pdfchat }
+
+module.exports = { welcome, auth, pdfchat };
