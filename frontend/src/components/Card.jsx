@@ -19,12 +19,14 @@ export default function Card() {
     }
 
     const saveToken = async () => {
+        document.getElementById('saveToken').disabled = true;
         setLoad(true);
 
         if (!token) {
             setError(true);
             setSuccess(false);
             setLoad(false);
+            document.getElementById('saveToken').disabled = false;
             return;
         }
 
@@ -43,6 +45,7 @@ export default function Card() {
                 setError(true);
                 setSuccess(false);
                 setLoad(false);
+                document.getElementById('saveToken').disabled = false;
             })
     }
 
@@ -84,7 +87,7 @@ export default function Card() {
                                     <path className="stroke-0" d="M12 2a9.96 9.96 0 0 1 6.29 2.226a1 1 0 0 1 .04 1.52l-1.51 1.362a1 1 0 0 1 -1.265 .06a6 6 0 1 0 2.103 6.836l.001 -.004h-3.66a1 1 0 0 1 -.992 -.883l-.007 -.117v-2a1 1 0 0 1 1 -1h6.945a1 1 0 0 1 .994 .89c.04 .367 .061 .737 .061 1.11c0 5.523 -4.477 10 -10 10s-10 -4.477 -10 -10s4.477 -10 10 -10z" fill="currentColor" />
                                 </svg>
                             </div>
-                            <input type="text" value={token} onChange={handleInputChange} className={`w-full rounded-md h-8 ps-7 p-2.5 pe-7 text-sm font-basic border border-gray-300 focus:outline-none focus:border-gray-400 ${success ? 'border-2 border-green-500' : ''} ${error ? 'border-2 border-red-500' : ''}`} placeholder="Enter Google API Key"></input>
+                            <input id="saveToken" type="text" value={token} onChange={handleInputChange} className={`w-full rounded-md h-8 ps-7 p-2.5 pe-7 text-sm font-basic border border-gray-300 focus:outline-none focus:border-gray-400 ${success ? 'border-2 border-green-500' : ''} ${error ? 'border-2 border-red-500' : ''}`} placeholder="Enter Google API Key"></input>
                             <div>
                                 <button className="absolute inset-y-0 end-0 flex items-center p-1 bg-black rounded-tr-md rounded-br-md" onClick={saveToken}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className={`w-4 h-4 stroke-white ${load ? 'hidden' : ''}`} viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">

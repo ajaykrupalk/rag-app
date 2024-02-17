@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import { pdfjs, Document, Page } from 'react-pdf'
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.js',
     import.meta.url,
 ).toString();
 
-export default function PdfDisplay({ fileName, fileUrl }) {
+export default function PdfDisplay({ fileName }) {
     const navigate = useNavigate();
+    const [cookies, setCookies] = useCookies(['token', 'fileUrl']);
 
     useEffect(() => {
         const handleRefresh = () => {
@@ -40,7 +42,7 @@ export default function PdfDisplay({ fileName, fileUrl }) {
     return (
         <div className="m-3 flex flex-col items-center">
             <div className="w-40 h-40 bg-gray-200 rounded-md border-2 border-gray-200 overflow-hidden">
-                <Document file={fileUrl} loading={handleLoading}>
+                <Document file={cookies.fileUrl} loading={handleLoading}>
                     <Page pageNumber={1} height={100} scale={2} />
                 </Document>
             </div>

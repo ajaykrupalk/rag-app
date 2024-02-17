@@ -2,14 +2,16 @@ import { useState } from 'react';
 import PdfIcon from '../assets/pdf-svgrepo-com.svg'
 import FileDisplay from './FileDisplay';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from "react-cookie";
 
 export default function Upload() {
     const [dragging, setDragging] = useState(false);
     const [fileName, setFileName] = useState("");
-    const [fileUrl, setFileUrl] = useState("");
+    const [fileUrl, setFileUrl] = useState(null);
     const [uploadStatus, setUploadStatus] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const [cookies, setCookies] = useCookies(['token', 'fileUrl']);
 
     const handleDragEnter = (e) => {
         e.preventDefault();
@@ -32,6 +34,7 @@ export default function Upload() {
     }
 
     const handleFileChange = (e) => {
+        console.log("file",e.target.files[0])
         e.preventDefault();
         setFileName('')
         setUploadStatus(false)
@@ -39,16 +42,17 @@ export default function Upload() {
         handleFile(e.target.files[0])
     }
 
-    const handleFile = (file) => {
+    const handleFile = async (file) => {
         if (file.type.startsWith('application/pdf')) {
             setFileUrl(URL.createObjectURL(file))
+            setCookies("fileUrl", URL.createObjectURL(file))
             setTimeout(() => {
                 setUploadStatus(true);
             }, 5000)
             setError('')
         } else {
             setFileName('')
-            setFileUrl('')
+            setFileUrl(null)
             setError('Select a valid PDF file')
         }
     }

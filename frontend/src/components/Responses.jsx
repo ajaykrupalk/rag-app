@@ -4,30 +4,39 @@ import ChatResponse from "./ChatResponse";
 import { useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 
-export default function Responses({ fileName, fileUrl, userInput }) {
+export default function Responses({ fileName, userInput }) {
     const chatContainerRef = useRef(null);
     const [messages, setMessages] = useState([])
     const [cookies, setCookies] = useCookies(['token', 'fileUrl']);
     const [streamingText, setStreamingText] = useState("")
     const [textStream, setTextStream] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [sessionId, setSessionId] = useState("");
+ 
+    useEffect(() => {
+        if(cookies.fileUrl){
+            setSessionId(`${Date.now()}-${Math.floor(Math.random() * 10000)}`)
+        }
+    },[cookies.fileUrl])
 
     useEffect(() => {
-
         const handleMessage = async (message) => {
             if (message && !loading && !textStream) {
                 setLoading(true)
                 setMessages([...messages, { type: 'user', text: message }])
                 const token = cookies.token
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/pdfchat`, {
+                                const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/pdfchat`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json' // Specify content type as JSON
                     },
-                    body: JSON.stringify({ token: token })
+                    body: JSON.stringify({ token: token, question: message, sessionId: sessionId, fileUrl: cookies.fileUrl })
                 })
 
                 if (!response.ok) {
+                    setMessages(prevMessages => [...prevMessages, { type: 'ai', text: 'Network response was not ok' }]);
+                    setLoading(false);
+                    setTextStream(false);
                     throw new Error('Network response was not ok');
                 }
 
@@ -56,9 +65,9 @@ export default function Responses({ fileName, fileUrl, userInput }) {
         handleMessage(userInput);
     }, [userInput, chatContainerRef]);
 
-    useEffect(()=>{
+    useEffect(() => {
         scrollToBottom();
-    },[messages])
+    }, [messages])
 
     const scrollToBottom = () => {
         if (chatContainerRef.current) {
@@ -68,13 +77,13 @@ export default function Responses({ fileName, fileUrl, userInput }) {
 
     return (
         <div className="h-full w-full overflow-y-auto" ref={chatContainerRef}>
-            <PdfDisplay fileName={fileName} fileUrl={fileUrl} />
+            <PdfDisplay fileName={fileName} />
             {textStream}
             {messages.map((message, index) => (
                 <div key={index}>
                     {message.type === 'user' ?
-                        <UserResponse text={message.text}/> :
-                        <ChatResponse text={message.text}/>
+                        <UserResponse text={message.text} /> :
+                        <ChatResponse text={message.text} />
                     }
                 </div>
             ))}

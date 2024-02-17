@@ -10,9 +10,9 @@ import { useCookies } from "react-cookie";
 export default function PageChatInterface() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [data, setData] = useState("")
-  const [inputValue, setInputValue] = useState("")
-  const [cookies, setCookies] = useCookies(['token']);
+  const [data, setData] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [cookies, setCookies] = useCookies(['token','fileURL']);
 
   useEffect(()=> {
     if(!location.state){
@@ -38,7 +38,7 @@ export default function PageChatInterface() {
 
   return (
     <Layout>
-      <Responses fileName={data.fileName} fileUrl={data.fileUrl} userInput={inputValue}/>
+      <Responses fileName={data.fileName} userInput={inputValue}/>
       <InputBox handleInput={handleInputChange}/>
     </Layout>
   )
