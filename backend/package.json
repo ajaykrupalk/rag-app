@@ -9,6 +9,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": ">=14.20.1"
+  },
   "dependencies": {
     "@google/generative-ai": "^0.2.0",
     "@langchain/community": "^0.0.27",
