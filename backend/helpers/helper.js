@@ -82,10 +82,22 @@ function createRephraseQuestionChain(token) {
     return rephraseQuestionChain;
 }
 
+const messageHistory = new ChatMessageHistory();
+// we should create a new history object per session
+const messageHistories = {}
+const getMessageHistoryForSession = (sessionId) => {
+    if (messageHistories[sessionId] !== undefined) {
+        return messageHistories[sessionId];
+    }
+    const newChatSessionHistory = new ChatMessageHistory();
+    messageHistories[sessionId] = newChatSessionHistory;
+    return newChatSessionHistory;
+};
+
 
 async function helper(token, question, sessionId, fileUrl) {
     // load the pdf file and split the document
-    const splitDocs = await loadAndSplitChunks({
+        const splitDocs = await loadAndSplitChunks({
         fileUrl: fileUrl,
         chunkSize: 1536,
         chunkOverlap: 128,
@@ -152,16 +164,6 @@ async function helper(token, question, sessionId, fileUrl) {
     const httpResponseOutputParser = new HttpResponseOutputParser({
         contentType: "text/plain"
     });
-
-    const messageHistories = {};
-    const getMessageHistoryForSession = (sessionId) => {
-        if (messageHistories[sessionId] !== undefined) {
-            return messageHistories[sessionId];
-        }
-        const newChatSessionHistory = new ChatMessageHistory();
-        messageHistories[sessionId] = newChatSessionHistory;
-        return newChatSessionHistory;
-    };
 
     const finalRetrievalChain = new RunnableWithMessageHistory({
         runnable: conversationalRetrievalChain,
