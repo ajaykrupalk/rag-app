@@ -26,10 +26,20 @@ export default function InputBox({handleInput}) {
         setValue('')
     }
 
+    const handleKeyDown = (event) => {
+        if(event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
+            handleInputValueChange();
+        }
+    }
+
     return (
         <div className="mb-2 w-full flex flex-col items-center">
             <div className="relative">
-                <textarea className="w-[40rem] max-h-[120px] p-2 resize-none rounded-md focus: outline-none ring-1 ring-gray-200 focus:ring-1 focus:ring-gray-300 placeholder-black/50" placeholder="Ask your PDF..." rows="1" value={value} ref={textAreaRef} onChange={handleChange}>
+                <textarea className="w-[40rem] max-h-[120px] p-2 resize-none rounded-md focus: outline-none ring-1 ring-gray-200 focus:ring-1 focus:ring-gray-300 placeholder-black/50"
+                        placeholder="Ask your PDF..." rows="1" value={value} ref={textAreaRef} 
+                        onChange={handleChange} onKeyDown={handleKeyDown}
+                >
                 </textarea>
                 <button className="disabled:opacity-10" onClick={handleInputValueChange} id="send_btn">
                     <div className="absolute bottom-3 end-2 flex p-0.5 rounded-md bg-black">
