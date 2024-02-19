@@ -34,9 +34,9 @@ export default function InputBox({handleInput}) {
     }
 
     return (
-        <div className="mb-2 w-full flex flex-col items-center">
-            <div className="relative">
-                <textarea className="w-[40rem] max-h-[120px] p-2 resize-none rounded-md focus: outline-none ring-1 ring-gray-200 focus:ring-1 focus:ring-gray-300 placeholder-black/50"
+        <div className="mb-2 w-full flex flex-col items-center p-1.5">
+            <div className="relative w-full sm:w-[40rem]">
+                <textarea className="w-full max-h-[120px] p-2 resize-none rounded-md focus: outline-none ring-1 ring-gray-200 focus:ring-1 focus:ring-gray-300 placeholder-black/50"
                         placeholder="Ask your PDF..." rows="1" value={value} ref={textAreaRef} 
                         onChange={handleChange} onKeyDown={handleKeyDown}
                 >
@@ -50,7 +50,7 @@ export default function InputBox({handleInput}) {
                     </div>
                 </button>
             </div>
-            <p className="text-sm text-center text-gray-500">Converse can make mistakes. Consider checking important information.</p>
+            <p className="min-[320px]:text-[12px] sm:text-sm text-center text-gray-500">AI can make mistakes. Consider checking important information.</p>
         </div>
     );
 }

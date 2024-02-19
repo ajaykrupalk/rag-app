@@ -90,14 +90,14 @@ export default function Responses({ fileName, userInput, fileObj }) {
                     }
                 </div>
             ))}
-            <div className={`mb-3 flex justify-center flex-nowrap ${loading ? '' : 'hidden'}`}>
-                <div className="bg-black h-8 w-8 rounded-full flex justify-center items-center">
-                    <svg className="stroke-white fill-white animate-spin" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <div className={`mx-1.5 mb-3 flex justify-center flex-nowrap ${loading ? '' : 'hidden'}`}>
+                <div className="bg-black rounded-full flex justify-center items-center h-[24px] w-[24px]">
+                    <svg className="stroke-white fill-white animate-spin h-[18px] w-[24px]" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                         <path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6z" />
                     </svg>
                 </div>
-                <div className="ml-2 w-[35rem]">
+                <div className="ml-1 w-[35rem]">
                 </div>
             </div>
             <div className={textStream ? '' : 'hidden'}>

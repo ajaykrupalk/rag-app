@@ -50,7 +50,7 @@ export default function Card() {
     }
 
     return (
-        <div className="w-[22em]">
+        <div className="max-sm:px-2 max-sm:w-full min-[365px]:w-[22em]">
             <div className={`h-max ${error ? 'bg-red-100 text-red-600' : ''} ${success ? 'bg-green-100 text-green-600' : ''} font-medium p-2.5 text-xs rounded`}>
                 {error && <div className="flex gap-1 items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
@@ -111,7 +111,7 @@ export default function Card() {
                     <div className="text-xs text-gray-400 font-medium mt-2">
                         <p className="font-bold">To retrieve API key</p>
                         <ol className="list-decimal list-inside leading-5">
-                            <li>Go to <a href="https://makersuite.google.com/app/apikey" className="underline font-bold" target="__blank">https://makersuite.google.com/app/apikey</a></li>
+                            <li>Go to <a href="https://makersuite.google.com/app/apikey" className="underline font-bold" target="__blank">Google AI Studio</a></li>
                             <li>Click on <span className="font-bold">Get API Key</span></li>
                             <li>Copy the API key and paste it above</li>
                             <li>Click on <span className="font-bold">Verify</span></li>

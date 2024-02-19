@@ -41,12 +41,12 @@ export default function PdfDisplay({ fileName }) {
 
     return (
         <div className="m-3 flex flex-col items-center">
-            <div className="w-40 h-40 bg-gray-200 rounded-md border-2 border-gray-200 overflow-hidden">
+            <div className="max-sm:w-36 max-sm:h-36 sm:w-40 sm:h-40 bg-gray-200 rounded-md border-2 border-gray-200 overflow-hidden">
                 <Document file={cookies.fileUrl} loading={handleLoading}>
                     <Page pageNumber={1} height={100} scale={2} />
                 </Document>
             </div>
-            <p className="font-medium text-sm text-center text-gray-400 w-60 truncate" title={fileName}>Uploaded {fileName}</p>
+            <p className="max-sm:text-xs font-medium text-sm text-center text-gray-400 w-60 truncate" title={fileName}>Uploaded {fileName}</p>
         </div>
     );
 }
