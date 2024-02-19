@@ -13,6 +13,10 @@ export default function PdfDisplay({ fileName }) {
     const [cookies, setCookies] = useCookies(['token', 'fileUrl']);
 
     useEffect(() => {
+        if(!cookies.fileUrl){
+            return navigate("/upload");
+        }
+
         const handleRefresh = () => {
           return navigate("/upload")
         };
@@ -24,7 +28,7 @@ export default function PdfDisplay({ fileName }) {
         return () => {
           window.removeEventListener('beforeunload', handleRefresh);
         };
-      }, [navigate]);
+      }, [navigate, cookies.fileUrl]);
 
     const handleLoading = () => {
         return (
