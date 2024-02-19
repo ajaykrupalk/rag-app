@@ -1,4 +1,4 @@
-import Layout from "./layout";
+import Layout from "./Layout";
 import InputBox from "./InputBox";
 import Responses from "./Responses";
 import { useLocation } from "react-router-dom";

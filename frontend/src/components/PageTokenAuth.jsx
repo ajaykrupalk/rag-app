@@ -1,5 +1,5 @@
 import Card from "./Card";
-import Layout from "./layout";
+import Layout from "./Layout";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
