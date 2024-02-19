@@ -1,5 +1,5 @@
 import Upload from "./Upload";
-import Layout from "./layout";
+import Layout from "./Layout";
 import AuthGuard from "../guards/auth.guard";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
