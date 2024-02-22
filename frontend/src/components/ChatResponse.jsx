@@ -9,8 +9,8 @@ export default function ChatResponse({ text }) {
                     <path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6z" />
                 </svg>
             </div>
-            <div className="ml-1 p-1.5 w-[35rem] h-auto bg-white rounded-md rounded-tl-none border-2 border-gray-200 list-inside list-disc">
-                <Markdown>{`${text}`}</Markdown>
+            <div className="ml-1 p-2 w-[35rem] h-auto bg-white rounded-md rounded-tl-none border-2 border-gray-200 list-inside list-disc">
+                <Markdown className="prose">{`${text}`}</Markdown>
             </div>
         </div>
     );
