@@ -1,17 +1,18 @@
-require('dotenv').config()
-const { ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings } = require("@langchain/google-genai");
-const { TaskType } = require("@google/generative-ai");
-const { PDFLoader } = require("langchain/document_loaders/fs/pdf");
-const { RecursiveCharacterTextSplitter } = require("langchain/text_splitter");
-const { MemoryVectorStore } = require("langchain/vectorstores/memory");
-const { ChatPromptTemplate, MessagesPlaceholder } = require("@langchain/core/prompts");
-const { RunnablePassthrough, RunnableSequence } = require("@langchain/core/runnables");
-const { StringOutputParser } = require("@langchain/core/output_parsers");
-const { HttpResponseOutputParser } = require("langchain/output_parsers");
-const { RunnableWithMessageHistory } = require("@langchain/core/runnables");
-const { ChatMessageHistory } = require("langchain/stores/message/in_memory");
-const parse = require("pdf-parse");
-const fs = require("fs")
+import dotenv from "dotenv";
+import { ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
+import { TaskType } from "@google/generative-ai";
+import { PDFLoader } from "langchain/document_loaders/fs/pdf";
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+import { MemoryVectorStore } from "langchain/vectorstores/memory";
+import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts";
+import { RunnablePassthrough, RunnableSequence } from "@langchain/core/runnables";
+import { StringOutputParser } from "@langchain/core/output_parsers";
+import { HttpResponseOutputParser } from "langchain/output_parsers";
+import { RunnableWithMessageHistory } from "@langchain/core/runnables";
+import { ChatMessageHistory } from "langchain/stores/message/in_memory";
+import * as parse from "pdf-parse";
+import fs from "fs";
+dotenv.config();
 
 
 async function loadAndSplitChunks({
@@ -181,4 +182,5 @@ async function helper(token, question, sessionId, fileUrl) {
     return stream;
 }
 
-module.exports = { helper }
+export {helper};
+// module.exports = { helper }

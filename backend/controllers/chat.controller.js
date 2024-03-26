@@ -1,5 +1,5 @@
-const { ChatGoogleGenerativeAI } = require('@langchain/google-genai')
-const { helper } = require('../helpers/helper')
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { helper } from '../helpers/helper.js';
 
 const welcome = (req, res) => {
     res.status(200).send('Hello World!')
@@ -38,7 +38,7 @@ const pdfchat = async (req, res) => {
         for await (const chunk of stream) {
             const decoder = new TextDecoder();
             const text = decoder.decode(chunk);
-            console.log("Chunk:", text);
+            // console.log("Chunk:", text);
             res.write(text)
         }
         res.end();
@@ -49,4 +49,4 @@ const pdfchat = async (req, res) => {
 }
 
 
-module.exports = { welcome, auth, pdfchat };
+export { welcome, auth, pdfchat };

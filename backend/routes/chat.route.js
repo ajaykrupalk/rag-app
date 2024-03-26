@@ -1,7 +1,7 @@
-const express = require('express')
+import express from 'express'
 const router = express.Router();
-const { welcome, auth, pdfchat } = require('../controllers/chat.controller')
-const multer = require('multer');
+import { welcome, auth, pdfchat } from '../controllers/chat.controller.js'
+import multer from 'multer';
 
 const upload = multer({dest: 'temp/'})
 
@@ -11,4 +11,4 @@ router.post("/auth", auth);
 
 router.post("/pdfchat", upload.single('file'), pdfchat);
 
-module.exports = router
+export default router;
