@@ -10,7 +10,7 @@ import { StringOutputParser } from "@langchain/core/output_parsers";
 import { HttpResponseOutputParser } from "langchain/output_parsers";
 import { RunnableWithMessageHistory } from "@langchain/core/runnables";
 import { ChatMessageHistory } from "langchain/stores/message/in_memory";
-import * as parse from "pdf-parse";
+// import * as parse from "pdf-parse";
 import fs from "fs";
 dotenv.config();
 
