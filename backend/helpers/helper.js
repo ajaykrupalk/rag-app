@@ -74,7 +74,7 @@ function createRephraseQuestionChain(token) {
     const rephraseQuestionChain = RunnableSequence.from([
         rephraseQuestionChainPrompt,
         new ChatGoogleGenerativeAI({
-            modelName: "gemini-pro",
+            modelName: "gemini-2.0-flash",
             maxOutputTokens: 2048,
             apiKey: token
         }),
@@ -155,7 +155,7 @@ async function helper(token, question, sessionId, fileUrl) {
         }),
         answerGenerationChainPrompt,
         new ChatGoogleGenerativeAI({
-            modelName: "gemini-pro",
+            modelName: "gemini-2.0-flash",
             maxOutputTokens: 2048,
             apiKey: token
         }),

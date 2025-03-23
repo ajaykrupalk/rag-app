@@ -10,7 +10,7 @@ const auth = async (req, res) => {
     try {
         const { token } = req.body
         const model = new ChatGoogleGenerativeAI({
-            modelName: "gemini-pro",
+            modelName: "gemini-2.0-flash",
             maxOutputTokens: 1,
             apiKey: token
         });
